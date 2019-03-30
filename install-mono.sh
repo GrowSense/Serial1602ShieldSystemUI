@@ -7,7 +7,7 @@ if [ "$USE_MONO4" = 1 ]; then
     echo "Mono is already installed. Skipping install."
   fi
 else
-  if ! type "msbuild" > /dev/null; then
+  if ! type "xbuild" > /dev/null; then
     echo "Installing latest mono"
     VERSION_NAME=$(lsb_release -cs)
   
