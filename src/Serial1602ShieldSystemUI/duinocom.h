@@ -1,7 +1,7 @@
 #ifndef duinocom_H_
 #define duinocom_H_
 
-const int MAX_MSG_LENGTH = 16;
+const int MAX_MSG_LENGTH = 20;
 
 
 bool checkMsgReady();

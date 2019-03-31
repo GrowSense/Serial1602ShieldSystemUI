@@ -23,8 +23,7 @@ if ! type "git" > /dev/null; then
   sudo apt-get install -y git
 fi
 
-sh prepare-sketch.sh && \
-sh prepare-controller.sh
+sh prepare-sketch.sh
 
 
 cd $DIR
