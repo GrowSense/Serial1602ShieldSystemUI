@@ -20,15 +20,20 @@ long buttonInterval = 200;
 
 bool didChange = false;
 
+#define VERSION "1-0-0-1"
+#define BOARD_TYPE "uno"
+
 void setup()
 {
   Serial.begin(9600);
   
   Serial.println("Serial GreenSense System UI");
+  
+  serialPrintDeviceInfo();
    
-  lcd.begin(16, 2);              // start the library
+  lcd.begin(16, 2);
    
-  lcd.write("Loading...");
+  lcd.write("GreenSense");
 }
  
 void loop()
@@ -36,10 +41,21 @@ void loop()
   handleButtons();
   
   handleMsg();
-
-  //drawMenu();
   
   delay(1);
+}
+
+void serialPrintDeviceInfo()
+{
+  Serial.println("");
+  Serial.println("Family: GreenSense");
+  Serial.println("Group: ui");
+  Serial.println("Project: Serial1602ShieldSystemUI");
+  Serial.print("Board: ");
+  Serial.println(BOARD_TYPE);
+  Serial.print("Version: ");
+  Serial.println(VERSION);
+  Serial.println("");
 }
 
 void handleButtons()
@@ -95,90 +111,46 @@ void handleMsg()
         
     char letter = msg[0];
 
-    int length = strlen(msg);
-
-    Serial.print("Received message: ");
-    Serial.println(msg);
-    
-    int lineIndex = getLineIndex(msg);
-    
-    if (isDebug)
+    if (letter == "#")
     {
-      Serial.print("Line index: ");
-      Serial.println(lineIndex);
+      serialPrintDeviceInfo();
     }
-    
-    int pipePosition = getPipePosition(msg);
-    
-    char text[16];
-    substring(msg, pipePosition+1, strlen(msg)-pipePosition-1, text);
+    else
+    {
+      int length = strlen(msg);
 
-    if (isDebug)
-    {
-      Serial.print("Value: ");
-      Serial.println(text);
-    }
-    
-    if (length > 0)
-    {
-      lcd.setCursor(0,lineIndex);
-      lcd.print("                    ");
-      lcd.setCursor(0,lineIndex);
-      lcd.print(text);
+      Serial.print("Received message: ");
+      Serial.println(msg);
+      
+      int lineIndex = getLineIndex(msg);
+      
+      if (isDebug)
+      {
+        Serial.print("Line index: ");
+        Serial.println(lineIndex);
+      }
+      
+      int pipePosition = getPipePosition(msg);
+      
+      char text[16];
+      substring(msg, pipePosition+1, strlen(msg)-pipePosition-1, text);
+
+      if (isDebug)
+      {
+        Serial.print("Value: ");
+        Serial.println(text);
+      }
+      
+      if (length > 0)
+      {
+        lcd.setCursor(0,lineIndex);
+        lcd.print("                    ");
+        lcd.setCursor(0,lineIndex);
+        lcd.print(text);
+      }
     }
   }
 }
-
-/*void getValue(char msg[], char value[])
-{
-  if (isDebug)
-  {
-    Serial.println("Getting value");
-  }
-
-  int pipePosition = getPipePosition(msg);
-
-  if (isDebug)
-  {
-    Serial.print("  Pipe position: ");
-    Serial.println(pipePosition);
-  }
-
-  if (pipePosition > 0)
-  {
-    int valueLength = strlen(msg)-pipePosition-1;
-
-    if (isDebug)
-    {
-      Serial.print("  Value length: ");
-      Serial.println(valueLength);
-    }
-
-    int valueStartPosition = pipePosition+1;
-
-    if (isDebug)
-    {
-      Serial.print("  Value start position: ");
-      Serial.println(valueStartPosition);
-    }
-
-    substring(msg, valueStartPosition, valueLength, value);
-    
-  }
-  else
-  {
-    value = msg;
-  }
-  
-  if (isDebug)
-  {
-    Serial.print("  Value: ");
-    Serial.println(value);
-
-    Serial.println("Finished getting value");
-    Serial.println("");
-  }
-}*/
 
 int getPipePosition(char* msg)
 {
@@ -259,8 +231,6 @@ void substring(char msg[], int startIndex, int length, char output[])
   }
   
   output[total] = '\0';
-
-//  output = buffer;
 }
 
 int getLineIndex(char* msg)
@@ -276,446 +246,3 @@ int getLineIndex(char* msg)
   
   return lineIndex;
 }
-
-/*
-void sendThresholdCommand()
-{
-  
-  Serial.println("Sending threshold command");
-
-  String cmd = "T";
-  cmd = cmd + soilMoistureThreshold;
-  
-  Serial.println(cmd);
-  
-  Serial.println(cmd);
-  
-  lcd.setCursor(0, 1);
-  lcd.write("              ->");
-  
-  clearSerialBuffer();
-}
-
-void decreaseThreshold()
-{
-  soilMoistureThreshold--;
-  
-  didChange = true;
-}
-
-void increaseThreshold()
-{
-  soilMoistureThreshold++;
-  
-  didChange = true;
-}
-
-void sendPumpBurstOnDurationCommand()
-{
-  Serial.println("Sending pump burst on time command");
-
-  String cmd = "B";
-  cmd = cmd + pumpBurstOnDuration;
-  
-  Serial.println(cmd);
-  
-  Serial.println(cmd);
-  
-  lcd.setCursor(0, 1);
-  lcd.write("              ->");
-}
-
-void decreasePumpBurstOnDuration()
-{
-  pumpBurstOnDuration--;
-  
-  didChange = true;
-}
-
-void increasePumpBurstOnDuration()
-{
-  pumpBurstOnDuration++;
-  
-  didChange = true;
-}
-
-void sendPumpBurstOffDurationCommand()
-{
-  
-  Serial.println("Sending pump burst off time command");
-
-  String cmd = "O";
-  cmd = cmd + pumpBurstOffDuration;
-  
-  Serial.println(cmd);
-  
-  Serial.println(cmd);
-  
-  lcd.setCursor(0, 1);
-  lcd.write("              ->");
-}
-
-void decreasePumpBurstOffDuration()
-{
-  pumpBurstOffDuration--;
-  
-  didChange = true;
-}
-
-void increasePumpBurstOffDuration()
-{
-  pumpBurstOffDuration++;
-  
-  didChange = true;
-}
-
-void sendReadingIntervalCommand()
-{
-  
-  Serial.println("Sending reading interval command");
-
-  String cmd = "V";
-  cmd = cmd + readingInterval;
-  
-  Serial.println(cmd);
-  
-  Serial.println(cmd);
-  
-  lcd.setCursor(0, 1);
-  lcd.write("              ->");
-}
-
-void decreaseReadingInterval()
-{
-  readingInterval--;
-  
-  didChange = true;
-}
-
-void increaseReadingInterval()
-{
-  readingInterval++;
-  
-  didChange = true;
-}
-
-void sendPumpStatusCommand()
-{
-  
-  Serial.println("Sending pump status command");
-
-  String cmd = "P";
-  cmd = cmd + pumpStatus;
-  
-  Serial.println(cmd);
-  
-  Serial.println(cmd);
-  
-  lcd.setCursor(0, 1);
-  lcd.write("              ->");
-}
-
-void pumpLeftOption()
-{
-  if (pumpStatus <= 0)
-    pumpStatus = 2;
-  else
-    pumpStatus--;
-  
-  Serial.print("Pump status: ");
-  Serial.println(pumpStatus);
-  
-  didChange = true;
-}
-
-void pumpUpOption()
-{
-  if (pumpStatus >= 2)
-    pumpStatus = 0;
-  else
-    pumpStatus++;
-    
-  Serial.print("Pump status: ");
-  Serial.println(pumpStatus);
-  
-  didChange = true;
-}
-
-void clearSerialBuffer()
-{
-  Serial.println("Clearing serial buffer");
-  
-  while(Serial.available() > 0) {
-    char t = Serial.read();
-  }
-}
-
-void parseData(char* data)
-{
-  if (isDebug)
-  {
-    Serial.println("Parsing data...");
-    Serial.println(data);
-	}
-
-  int colonPosition = getColonPosition(data);
-
-
-  int keyLength = colonPosition;
-
-  if (isDebug)
-  {
-    Serial.print("Key length: ");
-    Serial.println(keyLength);
-  }
-
-  char key[10];
-  
-  // Figure out a cleaner way to do this
-  for (int i = 0; i < 10; i++)
-  {
-    if (i < keyLength)
-      key[i] = data[i];
-    else
-      key[i] = '\0';
-  }
-
-
-  if (isDebug)
-  {
-    Serial.print("Key: ");
-    Serial.println(key);
-  }
-  
-	int value = getValue(data);
-
-  if (isDebug)
-  {
-    Serial.print("Value: ");
-    Serial.println(value);
-  }
-
-	setData(key, value);
-
-  if (isDebug)
-  {
-    Serial.println();
-    Serial.println();
-	    
-	}
-}
-
-void setData(char* key, int value)
-{
-	Serial.println("Setting data...");
-
-  if (isDebug)
-  {
-    Serial.print("Key: ");
-    Serial.println(key);
-    
-    Serial.print("Value: ");
-    Serial.println(value);
-  }
-
-
-	if (strcmp(key, "C") == 0)
-	{
-			Serial.print("Soil moisture value (incoming):");
-			Serial.println(value);
- 
-      if (soilMoistureValue != value)
-      {
-        soilMoistureValue = value;
-      
-        didChange = true;
-      }
-	}
-	if (strcmp(key, "T") == 0)
-	{
-			Serial.print("Soil moisture threshold (incoming):");
-			Serial.println(value);
- 
-      if (soilMoistureThreshold != value)
-      {
-        soilMoistureThreshold = value;
-      
-        didChange = true;
-      }
-	}
-	if (strcmp(key, "V") == 0)
-	{
-			Serial.print("Reading interval (incoming):");
-			Serial.println(value);
- 
-      if (readingInterval != value)
-      {
-        readingInterval = value;
-      
-        didChange = true;
-      }
-	}
-	if (strcmp(key, "B") == 0)
-	{
-			Serial.print("Pump burst on duration (incoming):");
-			Serial.println(value);
- 
-      if (pumpBurstOnDuration != value)
-      {
-        pumpBurstOnDuration = value;
-      
-        didChange = true;
-      }
-	}
-	if (strcmp(key, "O") == 0)
-	{
-			Serial.print("Pump burst off duration (incoming):");
-			Serial.println(value);
- 
-      if (pumpBurstOffDuration != value)
-      {
-        pumpBurstOffDuration = value;
-      
-        didChange = true;
-      }
-	}
-	if (strcmp(key, "P") == 0)
-	{
-			Serial.print("Pump status (incoming):");
-			Serial.println(value);
- 
-      if (pumpStatus != value)
-      {
-        pumpStatus = value;
-      
-        didChange = true;
-      }
-	}
-}
-
-char* getKey(char* msg)
-{
-
-  if (isDebug)
-  {
-   Serial.println("Getting key");
-   Serial.println(msg);
-  }
-
-  int colonPosition = getColonPosition(msg);
-
-  if (isDebug)
-  {
-    Serial.print("  Colon position: ");
-    Serial.println(colonPosition);
-  }
-
-  int keyLength = colonPosition;
-
-  if (isDebug)
-  {
-    Serial.print("  Key length: ");
-    Serial.println(keyLength);
-  }
-
-  char key[5];
-  strncpy(key, msg, keyLength);
-  
-  if (isDebug)
-  {
-    Serial.print("  Key: ");
-    Serial.println(key);
-
-    Serial.println("Finished getting key");
-    Serial.println("");
-  }
-
-  return key;
-}
-
-
-int getValue(char* msg)
-{
-
-  if (isDebug)
-  {
-    Serial.println("Getting value");
-  }
-
-  int colonPosition = getColonPosition(msg);
-
-  if (isDebug)
-  {
-    Serial.print("  Colon position: ");
-    Serial.println(colonPosition);
-  }
-
-  int valueLength = strlen(msg)-colonPosition-1;
-
-  if (isDebug)
-  {
-    Serial.print("  Value length: ");
-   Serial.println(valueLength);
-  }
-
-  int valueStartPosition = colonPosition+1;
-
-  if (isDebug)
-  {
-    Serial.print("  Value start position: ");
-    Serial.println(valueStartPosition);
-  }
-
-  int value = readInt(msg, valueStartPosition, valueLength);
-  
-  if (isDebug)
-  {
-    Serial.print("  Value: ");
-    Serial.println(value);
-
-    Serial.println("Finished getting value");
-    Serial.println("");
-  }
-
-  return value;
-}
-
-int getColonPosition(char* msg)
-{
-
-  if (isDebug)
-  {
-    Serial.print("Getting colon position from: ");
-    Serial.println(msg);
-  }
-
-  int colonPosition = 0;
-
-  unsigned int numElements = strlen(msg);
-  unsigned int i;
-  for(i = 0; i < numElements; ++i) {
-      if (msg[i] == ':') {
-          colonPosition = i;
-          break;
-      }
-  }
-
-  return colonPosition;
-}
-
-char* getPumpStatusText(int pumpStatus)
-{
-  switch(pumpStatus)
-  {
-    case 0:
-      return "Off";
-      break;
-    case 1:
-      return "On";
-      break;
-    case 2:
-      return "Auto";
-      break;
-  }
-}
-*/
