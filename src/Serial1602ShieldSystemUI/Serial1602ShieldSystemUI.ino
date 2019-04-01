@@ -33,7 +33,15 @@ void setup()
    
   lcd.begin(16, 2);
    
-  lcd.write("GreenSense");
+  lcd.print("GreenSense");
+  delay(1000);
+  
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Waiting to");
+  lcd.setCursor(0,1);
+  lcd.print("connect...");
+  delay(1000);
 }
  
 void loop()
