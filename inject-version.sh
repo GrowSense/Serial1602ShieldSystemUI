@@ -15,4 +15,9 @@ echo "Version: $FULL_VERSION"
 
 SOURCE_FILE="src/Serial1602ShieldSystemUI/Serial1602ShieldSystemUI.ino"
 
-sed -i "s/#define VERSION .*/#define VERSION \"$FULL_VERSION\"/" $SOURCE_FILE
+echo "Source file:"
+echo "$SOURCE_FILE"
+
+sed -i "s/#define VERSION .*/#define VERSION \"$FULL_VERSION\"/" $SOURCE_FILE || exit 1
+
+echo "Done"
