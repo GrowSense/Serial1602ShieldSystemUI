@@ -119,7 +119,10 @@ void handleMsg()
         
     char letter = msg[0];
 
-    if (letter == "#")
+    Serial.print("Received message: ");
+    Serial.println(msg);
+      
+    if (letter == '#')
     {
       serialPrintDeviceInfo();
     }
@@ -127,9 +130,6 @@ void handleMsg()
     {
       int length = strlen(msg);
 
-      Serial.print("Received message: ");
-      Serial.println(msg);
-      
       int lineIndex = getLineIndex(msg);
       
       if (isDebug)
@@ -149,7 +149,7 @@ void handleMsg()
         Serial.println(text);
       }
       
-      if (length > 0)
+      if (length > 0 && !isWhitespace(text))
       {
         lcd.setCursor(0,lineIndex);
         lcd.print("                    ");
