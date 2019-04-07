@@ -31,6 +31,7 @@ void setup()
   Serial.begin(9600);
   
   Serial.println("Serial GreenSense System UI");
+  Serial.println("Starting...");
   
   serialPrintDeviceInfo();
    
@@ -44,7 +45,6 @@ void setup()
   lcd.print("Waiting to");
   lcd.setCursor(0,1);
   lcd.print("connect...");
-  delay(1000);
 }
  
 void loop()
