@@ -20,8 +20,11 @@ long buttonInterval = 200;
 
 bool didChange = false;
 
-#define VERSION "1-0-0-1"
+#define VERSION "1-0-0-8"
 #define BOARD_TYPE "uno"
+
+long lastSerialDataTime = 0;
+int serialDataInterval = 60 * 1000;
 
 void setup()
 {
@@ -50,6 +53,8 @@ void loop()
   
   handleMsg();
   
+  serialPrintData();
+  
   delay(1);
 }
 
@@ -64,6 +69,20 @@ void serialPrintDeviceInfo()
   Serial.print("Version: ");
   Serial.println(VERSION);
   Serial.println("");
+}
+
+void serialPrintData()
+{
+  bool isTimeToPrintData = lastSerialDataTime + serialDataInterval < millis();
+  
+  if (isTimeToPrintData)
+  {
+    lastSerialDataTime = millis();
+    Serial.print("D;");
+    Serial.print("Z:");
+    Serial.print(VERSION);
+    Serial.println(";;");
+  }
 }
 
 void handleButtons()
