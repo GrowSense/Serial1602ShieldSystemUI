@@ -79,7 +79,7 @@ void serialPrintData()
   {
     lastSerialDataTime = millis();
     Serial.print("D;");
-    Serial.print("Z:");
+    Serial.print("V:");
     Serial.print(VERSION);
     Serial.println(";;");
   }
