@@ -24,7 +24,7 @@ bool didChange = false;
 #define BOARD_TYPE "uno"
 
 long lastSerialDataTime = 0;
-int serialDataInterval = 30 * 1000;
+long serialDataInterval = 10 * 1000;
 
 void setup()
 {
@@ -73,7 +73,8 @@ void serialPrintDeviceInfo()
 
 void serialPrintData()
 {
-  bool isTimeToPrintData = lastSerialDataTime + serialDataInterval < millis();
+  bool isTimeToPrintData = lastSerialDataTime == 0
+   || lastSerialDataTime + serialDataInterval < millis();
   
   if (isTimeToPrintData)
   {
