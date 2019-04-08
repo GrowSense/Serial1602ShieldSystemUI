@@ -24,7 +24,7 @@ bool didChange = false;
 #define BOARD_TYPE "uno"
 
 long lastSerialDataTime = 0;
-int serialDataInterval = 60 * 1000;
+int serialDataInterval = 30 * 1000;
 
 void setup()
 {
