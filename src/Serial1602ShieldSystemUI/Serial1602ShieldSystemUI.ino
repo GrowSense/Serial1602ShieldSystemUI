@@ -20,7 +20,7 @@ long buttonInterval = 200;
 
 bool didChange = false;
 
-#define VERSION "1-0-0-16"
+#define VERSION "1-0-0-1"
 #define BOARD_TYPE "uno"
 
 long lastSerialDataTime = 0;
