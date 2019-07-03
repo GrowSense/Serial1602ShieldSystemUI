@@ -1,12 +1,11 @@
-sudo: required
-
-language: python
-
-install:
-  - sudo sh prepare.sh
-  - sh init.sh
-
-script:
-  - sh increment-version.sh
-  - sh inject-version.sh
-  - sh build.sh
+matrix:
+  include:
+    - language: python
+      python: 2.7
+      before_script:
+        - sh prepare-sketch.sh
+        - sh init-sketch.sh
+      script:
+        - sh increment-version.sh
+        - sh inject-version.sh
+        - sh build-sketch.sh

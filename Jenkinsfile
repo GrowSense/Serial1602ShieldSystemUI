@@ -4,6 +4,11 @@ pipeline {
         disableConcurrentBuilds();
     }
     stages {
+        stage('CleanWSStart') {
+            steps {
+                deleteDir()
+            }
+        }
         stage('Checkout') {
             steps {
                 shHide( 'git remote set-url origin https://${GHTOKEN}@github.com/GreenSense/Serial1602ShieldSystemUI.git' )
@@ -61,6 +66,11 @@ pipeline {
                 sh 'sh push-version.sh'
             }
         } 
+        stage('CleanWSEnd') {
+            steps {
+                deleteDir()
+            }
+        }
     }
     post {
         success() {
@@ -72,6 +82,7 @@ pipeline {
             )
         }
         failure() {
+          deleteDir()
           emailext (
               subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
               body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
