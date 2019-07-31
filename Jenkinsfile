@@ -11,11 +11,7 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                shHide( 'git remote set-url origin https://${GHTOKEN}@github.com/GreenSense/Serial1602ShieldSystemUI.git' )
-                sh "git config --add remote.origin.fetch +refs/heads/master:refs/remotes/origin/master"
-                sh "git fetch --no-tags"
-                sh 'git checkout $BRANCH_NAME'
-                sh 'git pull origin $BRANCH_NAME'
+                shHide( 'git clone --recursive -b $BRANCH_NAME https://${GHTOKEN}@github.com/GreenSense/Serial1602ShieldSystemUI.git .' )
             }
         }
         stage('Prepare') {
