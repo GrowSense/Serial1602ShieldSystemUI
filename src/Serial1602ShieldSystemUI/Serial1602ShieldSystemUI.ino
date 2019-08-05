@@ -149,6 +149,10 @@ void handleMsg()
     {
       serialPrintDeviceInfo();
     }
+    else if (letter == "Q")
+    {
+      lastSerialDataTime = 0;
+    }
     else
     {
       int length = strlen(msg);
