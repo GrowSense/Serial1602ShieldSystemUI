@@ -23,7 +23,7 @@ bool didChange = false;
 #define VERSION "1-0-0-1"
 #define BOARD_TYPE "uno"
 
-long lastSerialDataTime = 0;
+unsigned long lastSerialDataTime = 0;
 long serialDataInterval = 5 * 1000;
 
 void setup()
