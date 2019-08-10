@@ -77,7 +77,7 @@ void serialPrintDeviceInfo()
 void serialPrintData()
 {
   bool isTimeToPrintData = lastSerialDataTime == 0
-   || lastSerialDataTime + serialDataInterval < millis();
+   || millis() - lastSerialDataTime >= serialDataInterval;
   
   if (isTimeToPrintData)
   {
