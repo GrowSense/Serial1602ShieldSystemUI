@@ -30,14 +30,14 @@ void setup()
 {
   Serial.begin(9600);
   
-  Serial.println("Serial GreenSense System UI");
+  Serial.println("Serial GrowSense System UI");
   Serial.println("Starting...");
   
   serialPrintDeviceInfo();
    
   lcd.begin(16, 2);
    
-  lcd.print("GreenSense");
+  lcd.print("GrowSense");
   delay(1000);
   
   lcd.clear();
@@ -62,7 +62,7 @@ void serialPrintDeviceInfo()
 {
   Serial.println("");
   Serial.println("-- Start Device Info");
-  Serial.println("Family: GreenSense");
+  Serial.println("Family: GrowSense");
   Serial.println("Group: ui");
   Serial.println("Project: Serial1602ShieldSystemUI");
   Serial.print("Board: ");

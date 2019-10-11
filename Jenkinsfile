@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                shHide( 'git clone --recursive -b $BRANCH_NAME https://${GHTOKEN}@github.com/GreenSense/Serial1602ShieldSystemUI.git .' )
+                shHide( 'git clone --recursive -b $BRANCH_NAME https://${GHTOKEN}@github.com/GrowSense/Serial1602ShieldSystemUI.git .' )
             }
         }
         stage('Prepare') {
