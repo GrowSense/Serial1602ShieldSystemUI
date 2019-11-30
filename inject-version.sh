@@ -11,13 +11,13 @@ else
   FULL_VERSION=$VERSION_ARGUMENT
 fi
 
-echo "Version: $FULL_VERSION"
+echo "  Version: $FULL_VERSION"
 
-SOURCE_FILE="src/Serial1602ShieldSystemUI/Serial1602ShieldSystemUI.ino"
+SOURCE_FILE="src/Serial1602ShieldSystemUI/Common.h"
 
-echo "Source file:"
-echo "$SOURCE_FILE"
+echo "  Source file:"
+echo "    $SOURCE_FILE"
 
 sed -i "s/#define VERSION .*/#define VERSION \"$FULL_VERSION\"/" $SOURCE_FILE || exit 1
 
-echo "Done"
+echo "Finished injecting version into sketch."
