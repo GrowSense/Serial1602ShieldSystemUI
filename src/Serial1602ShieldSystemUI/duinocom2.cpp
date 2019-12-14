@@ -41,7 +41,7 @@ bool checkMsgReady()
       
       //for (int i = msgPosition; i < MAX_MSG_LENGTH; i++)
       //  msgBuffer[i] = '\0';
-        
+      msgBuffer[msgPosition] = '\0';
       msgPosition = 0;
 
       //if (verboseCom)
@@ -114,7 +114,7 @@ void printMsg(char msg[MAX_MSG_LENGTH])
 
 void clearMsg(char msgBuffer[MAX_MSG_LENGTH])
 {
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < MAX_MSG_LENGTH; i++)
   {
     msgBuffer[i] = '\0';
   }
