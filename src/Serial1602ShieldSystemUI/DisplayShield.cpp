@@ -14,13 +14,13 @@ int adc_key_in  = 0;
 #define btnNONE   5
 
 long lastButtonPress = 0;
-long buttonInterval = 200;
+long buttonInterval = 300;
 
 
 void handleButtons()
 {
   // Buttons are temporarily disabled to avoid duplicate presses
-  bool buttonsAreAvailable = lastButtonPress + buttonInterval < millis();
+  bool buttonsAreAvailable = millis() - lastButtonPress >= buttonInterval;
   
   if (buttonsAreAvailable)
   {
